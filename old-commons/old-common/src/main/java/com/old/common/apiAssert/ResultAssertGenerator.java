@@ -1,9 +1,9 @@
 package com.old.common.apiAssert;
 
-import com.old.apiAssert.api.StandardApiAssert;
-import com.old.apiAssert.check.abstractAssert.AbstractOperationApiAssert;
 import com.old.common.base.BaseResultEnum;
 import com.old.common.exception.ResultException;
+import io.github.min1854.apiAssert.api.StandardApiAssert;
+import io.github.min1854.apiAssert.check.abstractAssert.AbstractOperationApiAssert;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

@@ -7,7 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.old.apiAssert.check.OperateApiAssert;
+import io.github.min1854.apiAssert.check.OperateApiAssert;
 import com.old.common.base.BaseException;
 import com.old.generator.domain.Columns;
 import com.old.generator.domain.Tables;

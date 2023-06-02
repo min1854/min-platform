@@ -1,8 +1,8 @@
 package com.old.common.apiAssert;
 
-import com.old.apiAssert.check.abstractAssert.AbstractApiAssert;
 import com.old.common.base.BaseResultEnum;
 import com.old.common.exception.ResultException;
+import io.github.min1854.apiAssert.check.abstractAssert.AbstractApiAssert;
 
 import java.util.function.Supplier;
 
