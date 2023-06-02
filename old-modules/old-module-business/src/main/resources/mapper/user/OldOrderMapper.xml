@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldOrderMapper">
+
+    <resultMap id="resultMap" type="com.old.business.user.domain.OldOrder">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="userType" column="user_type" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="orderStatus" column="order_status" javaType="java.lang.String" jdbcType="CHAR"/>
+        <result property="extJson" column="ext_json" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="price" column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
+        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="createUserId" column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="updateUserId" column="update_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" javaType="java.lang.Boolean" jdbcType="BIT"/>
+    </resultMap>
+
+
+</mapper>

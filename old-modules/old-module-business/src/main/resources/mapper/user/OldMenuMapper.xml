@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldMenuMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldMenu">
+        <id property="id" column="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result property="menuName" column="menu_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="orderNum" column="order_num" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="menuPath" column="menu_path" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="component" column="component" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="menuQuery" column="menu_query" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="isFrame" column="is_frame" javaType="java.lang.Boolean" jdbcType="BIT"/>
+        <result property="isCache" column="is_cache" javaType="java.lang.Boolean" jdbcType="BIT"/>
+        <result property="menuType" column="menu_type" jdbcType="CHAR"/>
+        <result property="menuVisible" column="menu_visible" jdbcType="SMALLINT"/>
+        <result property="menuStatus" column="menu_status" jdbcType="SMALLINT"/>
+        <result property="perms" column="perms" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createUser" column="create_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="createUserId" column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="updateUserId" column="update_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="deleteFlag" column="delete_flag" javaType="java.lang.Boolean" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               menu_name,
+               parent_id,
+               order_num,
+               menu_path,
+               component,
+               menu_query,
+               is_frame,
+               is_cache,
+               menu_type,
+               menu_visible,
+               menu_status,
+               perms,
+               icon,
+               create_user,
+               create_time,
+               create_user_id,
+               update_user,
+               update_time,
+               update_user_id,
+               delete_flag
+        from old_menu
+    </sql>
+
+
+    <select id="selectInRoleId" resultType="com.old.common.domain.login.html.HtmlMenuBo">
+        select
+        om.id,
+        om.menu_name,
+        om.parent_id,
+        om.order_num,
+        om.menu_path,
+        om.component,
+        om.menu_query,
+        om.is_frame,
+        om.is_cache,
+        om.menu_type,
+        om.menu_visible,
+        om.menu_status,
+        om.perms,
+        om.icon
+        from old_role_menu_rel as ormr
+        left join old_menu as om on ormr.menu_id = om.id
+        where ormr.role_id in
+        <foreach collection="roleIds" open="(" separator="," close=")" item="roleId">
+            #{roleId}
+        </foreach>
+        and om.delete_flag = false
+    </select>
+    <select id="selectMenuListByUserId" resultType="com.old.business.user.domain.OldMenu">
+        select distinct m.id,
+        m.parent_id,
+        m.menu_name,
+        m.menu_path,
+        m.component,
+        m.menu_query,
+        m.menu_visible,
+        m.menu_status,
+        m.perms,
+        m.is_frame,
+        m.is_cache,
+        m.menu_type,
+        m.icon,
+        m.order_num,
+        m.create_time
+        from old_menu m
+        left join old_role_menu_rel rm on m.id = rm.menu_id
+        left join old_user_role_rel sur on rm.role_id = sur.role_id
+        left join old_role ro on sur.role_id = ro.id
+        <where>
+            <if test="userId != null">
+                and sur.user_id = #{userId}
+            </if>
+
+            <if test="menuName != null and menuName != ''">
+                <bind name="menuNameLike" value="'%' + menuName + '%'"/>
+                and m.menu_name like #{menuNameLike}
+            </if>
+
+            <if test="menuVisible != null">
+                and m.menu_visible = #{menuVisible}
+            </if>
+
+            <if test="menuStatus != null">
+                and m.menu_status = #{menuStatus}
+            </if>
+            and m.delete_flag = false
+        </where>
+        order by parent_id asc , order_num asc
+
+
+    </select>
+
+</mapper>

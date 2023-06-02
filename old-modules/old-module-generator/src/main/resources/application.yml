@@ -1,0 +1,67 @@
+server:
+  port: 9007
+
+
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  application:
+    name: @artifactId@
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://old.com:3306/${spring.datasource.database:old}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: qtdLw7-gN0a.
+  redis:
+    data:
+      host: old.com
+      port: 6379
+  minio:
+    endpoint: http://old.com
+    port: 9000
+    accessKey: rootUser
+    secretKey: rootPassword
+    bucket: old
+    server: http://old.com:9000
+  xxl-job:
+    # 调度中心部署根地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+    adminAddresses: http://old.com:8083/xxl-job-admin
+    # 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+    appName: ${spring.application.name}
+    # 执行器端口号 [选填]：小于等于0则自动获取；默认端口为9999，单机部署多个执行器时，注意要配置不同执行器端口；
+    # 由需要的模块进行配置
+    # executePort: ${old.job.executeport}
+    # 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；/data/applogs/xxl-job/jobhandler
+    logPath: ./logs/${spring.application.name}/job/
+    # 执行器日志文件保存天数 [选填] ： 过期日志自动清理, 限制值大于等于3时生效; 否则, 如-1, 关闭自动清理功能； 默认 -1
+    logRetentionDays: 7
+
+
+logging:
+  level:
+    com.old: debug
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%p, %X{traceId:-}]) %clr(${PID:- }){magenta} %clr([%t]){faint} %clr(%logger{39}){cyan} :%n %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
+
+mybatis-plus:
+  mapperLocations:
+    - "classpath:/mapper/*.xml"
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+---
+
+spring:
+  datasource:
+    database: information_schema

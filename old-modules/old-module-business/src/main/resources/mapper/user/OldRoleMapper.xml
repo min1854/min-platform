@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldRoleMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldRole">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="roleName" column="role_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="roleKey" column="role_key" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="roleSort" column="role_sort" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="dataScope" column="data_scope" jdbcType="VARCHAR"
+                typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="menuCheckStrictly" column="menu_check_strictly" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="deptCheckStrictly" column="dept_check_strictly" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="roleStatus" column="role_status" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="createUserId" column="create_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="updateUserId" column="update_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               role_name,
+               role_key,
+               role_sort,
+               data_scope,
+               menu_check_strictly,
+               dept_check_strictly,
+               role_status,
+               create_time,
+               create_user_id,
+               create_user,
+               update_time,
+               update_user_id,
+               update_user,
+               delete_flag
+        from old_role
+    </sql>
+
+
+    <sql id="selectRoleVo">
+        select distinct r.id,
+                        r.role_name,
+                        r.role_key,
+                        r.role_sort,
+                        r.data_scope,
+                        r.menu_check_strictly,
+                        r.dept_check_strictly,
+                        r.role_status,
+                        r.delete_flag,
+                        r.create_time
+        from old_role r
+                 left join old_user_role_rel ur on ur.role_id = r.id
+                 left join old_user u on u.id = ur.user_id
+                 left join old_dept d on u.dept_id = d.id
+    </sql>
+
+
+    <select id="selectRolePermissionByUserId" parameterType="Integer" resultMap="baseResultMap">
+        <include refid="selectRoleVo"/>
+        WHERE ur.user_id = #{userId} and r.delete_flag = false
+    </select>
+
+
+    <select id="selectAllocatedList" resultMap="com.old.business.user.mapper.OldUserMapper.baseResultMap">
+        select distinct u.id, u.dept_id, u.user_name, u.nick_name, u.email, u.phone, u.user_status, u.create_time
+        from old_user u
+        left join old_dept d on u.dept_id = d.id
+        left join old_user_role_rel ur on u.id = ur.user_id
+        left join old_role r on r.id = ur.role_id
+        where r.id = #{roleId}
+        <if test="userName != null and userName != ''">
+            <bind name="userNameLike" value="'%' + userName + '%'"/>
+            AND u.user_name like #{userNameLike}
+        </if>
+        <if test="phone != null and phone != ''">
+            <bind name="phoneLike" value="'%' + phone + '%'"/>
+            AND u.phone like #{phoneLike}
+        </if>
+        AND u.delete_flag = false
+        <!-- 数据范围过滤
+        ${params.dataScope}
+        -->
+    </select>
+
+
+    <select id="selectDeptListByRoleId" resultType="Integer">
+        select d.id
+        from old_dept d
+        left join old_role_dept rd on d.id = rd.dept_id
+        where rd.role_id = #{id}
+        <if test="deptCheckStrictly">
+            and d.id not in (select d.parent_id from old_dept d inner join old_role_dept rd on d.id = rd.dept_id and
+            rd.role_id = #{id})
+        </if>
+        order by d.parent_id, d.order_num
+    </select>
+
+    <select id="selectByUserId" resultType="com.old.common.domain.login.html.HtmlRoleBo">
+        select ro.id, ro.role_name
+        from old_role as ro
+                 left join old_user_role_rel as ourr on ro.id = ourr.role_id
+        where ourr.user_id = #{userId};
+    </select>
+
+
+    <select id="searchRolePage" parameterType="com.old.business.user.domain.req.SearchRoleReq"
+            resultMap="baseResultMap">
+        <include refid="selectRoleVo"/>
+        <where>
+            <if test="req.id != null and req.id != 0">
+                AND r.id = #{req.id}
+            </if>
+            <if test="req.roleName != null and req.roleName != ''">
+                <bind name="roleNameLike" value="'%' + req.roleName + '%'"/>
+                AND r.role_name like #{roleNameLike}
+            </if>
+            <if test="req.roleStatus != null">
+                AND r.role_status = #{req.roleStatus}
+            </if>
+            <if test="req.roleKey != null and req.roleKey != ''">
+                <bind name="roleKeyLike" value="'%' + req.roleKey + '%'"/>
+                AND r.role_key like #{roleKeyLike}
+            </if>
+            <if test="req.beginTime != null and req.endTime != null">
+                and r.create_time between #{req.beginTime} and #{req.endTime}
+            </if>
+            and r.delete_flag = false
+        </where>
+        <!-- 数据范围过滤 后面再考虑如何实现吧
+        ${params.dataScope}-->
+        order by r.role_sort
+    </select>
+
+
+    <select id="selectMenuListByRoleId" resultType="integer">
+        select m.id
+        from old_menu m
+        left join old_role_menu_rel rm on m.id = rm.menu_id
+        where rm.role_id = #{roleId}
+        <if test="menuCheckStrictly">
+            and m.id not in (select m.parent_id from old_menu m inner join old_role_menu_rel rm on m.id = rm.menu_id and
+            rm.role_id = #{roleId})
+        </if>
+        order by m.parent_id, m.order_num
+    </select>
+
+
+</mapper>

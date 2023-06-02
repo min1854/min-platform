@@ -1,0 +1,42 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.enums;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
+
+#foreach ($importClass in $tablesBo.importList)
+import ${importClass};
+#end
+
+/**
+ * ${tablesBo.tableComment} 实体的枚举类 ${tablesBo.tableName}
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+public interface ${tablesBo.className}Enums {
+
+    #foreach ($columnBo in $columnsBos)
+        #if(! $columnBo.enumInfos.isEmpty())
+
+            /**
+             * ${columnBo.columnName}
+             * ${columnBo.columnComment}
+             */
+            @Getter
+            @ToString
+            @RequiredArgsConstructor
+            enum ${columnBo.enumName} {
+            #foreach ($enumInfoBo in $columnBo.enumInfos)
+                ${enumInfoBo.name}("${enumInfoBo.desc}"),
+            #end
+            ;
+
+            private final String desc;
+
+        }
+        #end
+    #end
+
+}

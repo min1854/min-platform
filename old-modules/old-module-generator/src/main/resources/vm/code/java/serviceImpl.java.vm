@@ -1,0 +1,110 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.impl;
+
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import com.old.common.enums.ResultEnum;
+import com.old.common.mybatis.base.BaseServiceImpl;
+import ${generatorBo.packageName}.${generatorBo.moduleName}.mapper.${tablesBo.className}Mapper;
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.${tablesBo.className};
+import ${generatorBo.packageName}.${generatorBo.moduleName}.service.${tablesBo.className}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * ${tablesBo.tableComment}  ${tablesBo.tableName}
+ *
+ * mybatis-plus 提供了 baseMapper 所以这里不再注入
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+@Slf4j
+@Service
+@Transactional(rollbackFor = Throwable.class)
+public class ${tablesBo.className}ServiceImpl extends BaseServiceImpl<${tablesBo.className}Mapper, ${tablesBo.className}> implements ${tablesBo.className}Service {
+
+
+    @Override
+    public Page<${tablesBo.className}> page(Integer pageNum, Integer pageSize, ${tablesBo.className} ${tablesBo.objectName}) {
+        if (${tablesBo.objectName} ==null){
+            ${tablesBo.objectName} =new ${tablesBo.className}();
+        }
+
+        if (${tablesBo.objectName}.getDeleteFlag() == null){
+            ${tablesBo.objectName}.setDeleteFlag(false);
+        }
+        return this.page(new Page<>(pageNum, pageSize), Wrappers.lambdaQuery(${tablesBo.objectName}));
+    }
+
+    @Override
+    public List<${tablesBo.className}> list(${tablesBo.className} ${tablesBo.objectName}) {
+        if (${tablesBo.objectName} ==null){
+            ${tablesBo.objectName} =new ${tablesBo.className}();
+        }
+
+        if (${tablesBo.objectName}.getDeleteFlag() == null){
+            ${tablesBo.objectName}.setDeleteFlag(false);
+        }
+        return this.list(Wrappers.lambdaQuery(${tablesBo.objectName}));
+    }
+
+
+    @Override
+    public ${tablesBo.className} getById(${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName}) {
+        var byId = super.getById(id);
+        if (byId == null || byId.getDeleteFlag()) {
+            byId = null;
+        }
+        return byId;
+    }
+
+    @Override
+    public void updateBy${tablesBo.primaryKeyEnumName}(${tablesBo.className} ${tablesBo.objectName}, Integer userId, String userName) {
+        ${tablesBo.objectName}.setUpdateTime(LocalDateTime.now());
+        ${tablesBo.objectName}.setUpdateUser(userName);
+        ${tablesBo.objectName}.setUpdateUserId(userId);
+        this.apiAssert.isFalse(this.updateById(${tablesBo.objectName}), ResultEnum.UPDATE_FAIL);
+    }
+
+    @Override
+    public void save(${tablesBo.className} ${tablesBo.objectName}, Integer userId, String userName) {
+        ${tablesBo.objectName}.setCreateTime(LocalDateTime.now());
+        ${tablesBo.objectName}.setCreateUser(userName);
+        ${tablesBo.objectName}.setCreateUserId(userId);
+        this.apiAssert.isFalse(this.save(${tablesBo.objectName}), ResultEnum.SAVE_FAIL);
+    }
+
+    @Override
+    public void removeBy${tablesBo.primaryKeyEnumName}(${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName}, Integer userId, String userName) {
+        ${tablesBo.className} ${tablesBo.objectName} =new ${tablesBo.className}();
+        ${tablesBo.objectName}.setId(id);
+        ${tablesBo.objectName}.setUpdateTime(LocalDateTime.now());
+        ${tablesBo.objectName}.setUpdateUser(userName);
+        ${tablesBo.objectName}.setUpdateUserId(userId);
+        ${tablesBo.objectName}.setDeleteFlag(Boolean.TRUE);
+        this.apiAssert.isFalse(this.updateById(${tablesBo.objectName}), ResultEnum.DELETE_FAIL);
+    }
+
+
+    @Override
+    public void removeBy${tablesBo.primaryKeyEnumName}s(List<${tablesBo.primaryKeyJavaType}> ${tablesBo.primaryKeyJavaFiledName}s, Integer userId, String userName) {
+        LocalDateTime now = LocalDateTime.now();
+        List<${tablesBo.className}> list = ${tablesBo.primaryKeyJavaFiledName}s.stream().map(id -> {
+            ${tablesBo.className} ${tablesBo.objectName} =new ${tablesBo.className}();
+            ${tablesBo.objectName}.setId(id);
+            ${tablesBo.objectName}.setUpdateTime(now);
+            ${tablesBo.objectName}.setUpdateUser(userName);
+            ${tablesBo.objectName}.setUpdateUserId(userId);
+            ${tablesBo.objectName}.setDeleteFlag(Boolean.TRUE);
+            return ${tablesBo.objectName};
+        }).toList();
+        this.apiAssert.isFalse(this.updateBatchById(list), ResultEnum.DELETE_FAIL);
+    }
+
+
+}

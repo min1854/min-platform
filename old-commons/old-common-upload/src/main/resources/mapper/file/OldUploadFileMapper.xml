@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.common.file.mapper.OldUploadFileMapper">
+
+    <resultMap id="baseResultMap" type="com.old.common.file.domain.OldUploadFile">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="dbFile" column="db_file" jdbcType="LONGVARBINARY" javaType="java.lang.String"/>
+        <result property="fileType" column="file_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               db_file,
+               file_type,
+               create_time
+        from old_upload_file
+    </sql>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>old-spring-boot</artifactId>
+        <groupId>com.old</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>old-commons</artifactId>
+    <packaging>pom</packaging>
+
+
+    <modules>
+        <module>old-common-redis</module>
+        <module>old-common-web</module>
+        <module>old-common</module>
+        <module>old-common-mybatis</module>
+        <module>old-common-mq</module>
+        <module>old-common-redisSession</module>
+        <module>old-common-minio</module>
+        <module>old-common-job</module>
+        <module>old-common-upload</module>
+    </modules>
+
+
+</project>

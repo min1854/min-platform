@@ -1,0 +1,123 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.controller;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import com.old.common.apiAssert.ResultAssertHolder;
+import com.old.common.mybatis.result.DatabasePageR;
+import com.old.common.result.PageData;
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.${tablesBo.className};
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.req.${tablesBo.className}ViewPageReq;
+import com.old.common.result.R;
+import ${generatorBo.loginUtilImport};
+import ${generatorBo.packageName}.${generatorBo.moduleName}.service.${tablesBo.className}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+
+/**
+ * ${tablesBo.tableComment} Controller ${tablesBo.tableName}
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+@Slf4j
+@RestController
+@RequestMapping("${generatorBo.requestPathPrefix}${tablesBo.requestPath}")
+public class ${tablesBo.className}Controller {
+
+    private static final ResultAssertHolder.ResultAssert apiAssert = ResultAssertHolder.apiAssert();
+
+    @Autowired
+    private ${tablesBo.className}Service ${tablesBo.objectName}Service;
+
+
+    @GetMapping("/viewPage")
+    public R<PageData<${tablesBo.className}>> viewPage(@ModelAttribute ${tablesBo.className}ViewPageReq req,
+                                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        log.debug("${tablesBo.className} 查询参数：{}", req);
+        ## # query type EQ等于、NE 不等于、GT大于、LT小于、LIKE 模糊、BETWEEN 范围
+            return DatabasePageR.of(${tablesBo.objectName}Service.lambdaQuery()
+        #foreach($column in $columnsBos)
+            #if($column.query)
+                #set($MethodName=$column.javaFiled.substring(0,1).toUpperCase() + $column.javaFiled.substring(1))
+                #if($column.queryType == 'EQ')
+                        .eq(req.get$MethodName() != null #if($column.javaFieldType ==
+                            'String' && ! $column.isEnum) && !req.get$MethodName().isEmpty() #end, ${tablesBo.className}::get$MethodName, req.get$MethodName())
+                #elseif($column.queryType == 'NE')
+                        .ne(req.get$MethodName() != null #if($column.javaFieldType ==
+                            'String' && ! $column.isEnum) && !req.get$MethodName().isEmpty() #end, ${tablesBo.className}::get$MethodName,
+                    req.get$MethodName())
+                #elseif($column.queryType == 'GT')
+                    .gt(req.get$MethodName() != null, ${tablesBo.className}::get$MethodName, req.get$MethodName())
+                #elseif($column.queryType == 'LT')
+                    .lt(req.get$MethodName() != null, ${tablesBo.className}::get$MethodName, req.get$MethodName())
+                #elseif($column.queryType == 'LIKE')
+                    .like(req.get$MethodName() != null #if($column.javaFieldType ==
+                    'String'  && ! $column.isEnum) && !req.get$MethodName().isEmpty() #end, ${tablesBo.className}::get$MethodName, req.get$MethodName())
+                #elseif($column.queryType == 'BETWEEN')
+                    .between(req.getBegin$MethodName() != null && req.getEnd$MethodName() != null,
+                    ${tablesBo.className}::get$MethodName, req.getBegin$MethodName(), req.getEnd$MethodName())
+                #end
+            #end
+        #end
+        .eq(${tablesBo.className}::getDeleteFlag, false)
+                            .page(new Page<>(pageNum, pageSize)));
+    }
+
+
+    @GetMapping("/page")
+    public R<PageData<${tablesBo.className}>> page(@ModelAttribute ${tablesBo.className} ${tablesBo.objectName},
+                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        return DatabasePageR.of(${tablesBo.objectName}Service.page(pageNum, pageSize, ${tablesBo.objectName}));
+    }
+
+
+    @GetMapping("/select")
+    public R<List<${tablesBo.className}>> select(@ModelAttribute ${tablesBo.className} ${tablesBo.objectName}) {
+        return R.ok(${tablesBo.objectName}Service.list(${tablesBo.objectName}));
+    }
+
+
+    @GetMapping("/getBy${tablesBo.primaryKeyEnumName}")
+    public R<${tablesBo.className}> getBy${tablesBo.primaryKeyEnumName}(@RequestParam("${tablesBo.primaryKeyJavaFiledName}") ${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName}) {
+        return R.ok(${tablesBo.objectName}Service.getById(${tablesBo.primaryKeyJavaFiledName}));
+    }
+
+
+    @PostMapping("/updateBy${tablesBo.primaryKeyEnumName}")
+    public R<Void> updateBy${tablesBo.primaryKeyEnumName}(@RequestBody ${tablesBo.className} ${tablesBo.objectName}) {
+            ${tablesBo.objectName}Service.updateById(${tablesBo.objectName}, ${generatorBo.loginUtilName}.loginUserId(), ${generatorBo.loginUtilName}.
+        loginUserName());
+        return R.ok();
+    }
+
+
+    @PostMapping("/save")
+    public R<Void> save(@RequestBody ${tablesBo.className} ${tablesBo.objectName}) {
+            ${tablesBo.objectName}Service.save(${tablesBo.objectName}, ${generatorBo.loginUtilName}.loginUserId(), ${generatorBo.loginUtilName}.
+        loginUserName());
+        return R.ok();
+    }
+
+
+    @PostMapping("/removeBy${tablesBo.primaryKeyEnumName}/{${tablesBo.primaryKeyJavaFiledName}}")
+    public R<Void> removeBy${tablesBo.primaryKeyEnumName}(@PathVariable("${tablesBo.primaryKeyJavaFiledName}") ${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName}) {
+            ${tablesBo.objectName}Service.removeById(${tablesBo.primaryKeyJavaFiledName}, ${generatorBo.loginUtilName}.loginUserId(), ${generatorBo.loginUtilName}.
+        loginUserName());
+        return R.ok();
+    }
+
+
+    @PostMapping("/removeBy${tablesBo.primaryKeyEnumName}s")
+    public R<Void> removeBy${tablesBo.primaryKeyEnumName}s(@RequestBody List<${tablesBo.primaryKeyJavaType}> ${tablesBo.primaryKeyJavaFiledName}s) {
+            ${tablesBo.objectName}Service.removeByIds(${tablesBo.primaryKeyJavaFiledName}s, ${generatorBo.loginUtilName}.loginUserId(), ${generatorBo.loginUtilName}.
+        loginUserName());
+        return R.ok();
+    }
+
+}

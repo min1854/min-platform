@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldUserPostMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldUserPost">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="postId" column="post_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="createUserId" column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="updateUserId" column="update_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" javaType="java.lang.Boolean" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               user_id,
+               post_id,
+               create_time,
+               create_user_id,
+               create_user,
+               update_time,
+               update_user_id,
+               update_user,
+               delete_flag
+        from old_user_post
+    </sql>
+
+</mapper>

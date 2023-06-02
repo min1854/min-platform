@@ -1,0 +1,15 @@
+# idea
+.idea
+*.iml
+
+
+# maven
+**/target
+
+# code
+**/gen.yml
+*.log
+temp/
+
+
+runConfigurations

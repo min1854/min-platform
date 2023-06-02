@@ -1,0 +1,32 @@
+# 作者
+author: old
+# 数据库名 不能为空
+database: old
+# 创建时间，为空则是当前时间、yyyy-MM-dd 格式
+datetime:
+# 不需要的表的名称
+dontNeedTablesName:
+  - branch_table
+  - global_table
+  - lock_table
+  - t_order
+  - undo_log
+# com.old.business.xxx 为 xx 的值
+moduleName: user
+# 输出目录 目录格式要：/dir/dir/ 这样的，目录最后要加  /
+outDir:
+
+# 包名
+packageName: com.old.business
+# 请求前缀 默认为空字符串
+requestPathPrefix: ''
+# 要查询的表名，为空查询全部数据库表
+tableNames:
+  - test_tree_gen
+# 生成
+
+
+# loginUtil 的类
+loginUtilImport: com.old.common.web.util.LoginUtil
+loginUtilName: LoginUtil
+

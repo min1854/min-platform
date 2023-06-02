@@ -1,0 +1,31 @@
+import {byValue} from "./enums";
+
+
+
+#foreach ($columnBo in $columnsBos)
+    #if(! $columnBo.enumInfos.isEmpty())
+    /**
+     * ${columnBo.columnComment}
+     */
+    export const ${columnBo.javaFiled}Enum = {
+        #foreach ($enumInfoBo in $columnBo.enumInfos)
+                ${enumInfoBo.name}: {
+                desc: "${enumInfoBo.desc}",
+                value: "${enumInfoBo.name}"
+            },
+        #end
+        values() {
+            return [
+                #foreach ($enumInfoBo in $columnBo.enumInfos)
+                    this.${enumInfoBo.name},
+                #end
+            ]
+        },
+        byValue(value) {
+            return byValue(this.values(), value);
+        },
+    };
+
+
+    #end
+#end

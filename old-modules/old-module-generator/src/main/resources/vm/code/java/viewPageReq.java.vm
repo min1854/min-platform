@@ -1,0 +1,46 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.domain.req;
+
+import lombok.Data;
+
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.${tablesBo.className};
+
+import cn.hutool.core.date.DatePattern;
+import org.springframework.format.annotation.DateTimeFormat;
+
+#foreach ($importClass in $tablesBo.importList)
+import ${importClass};
+#end
+
+/**
+ * ${tablesBo.tableComment} 查询对象 ${tablesBo.tableName}
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+@Data
+public class ${tablesBo.className}ViewPageReq extends ${tablesBo.className} {
+
+    #foreach($column in $columnsBos)
+        #if($column.query)
+            #if($column.queryType == 'BETWEEN')
+                #set($FieldName=$column.javaFiled.substring(0,1).toUpperCase() + $column.javaFiled.substring(1))
+                #if($column.javaFieldType == 'LocalDateTime' || $column.javaFieldType == 'Date')
+                @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
+                #elseif($column.javaFieldType  == 'LocalDate')
+                @DateTimeFormat(pattern = DatePattern.NORM_DATE_PATTERN)
+                #elseif($column.javaFieldType  == 'LocalTime')
+                @DateTimeFormat(pattern = DatePattern.NORM_TIME_PATTERN)
+                #end
+            private $column.javaFieldType begin$FieldName;
+                #if($column.javaFieldType == 'LocalDateTime' || $column.javaFieldType == 'Date')
+                @DateTimeFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
+                #elseif($column.javaFieldType  == 'LocalDate')
+                @DateTimeFormat(pattern = DatePattern.NORM_DATE_PATTERN)
+                #elseif($column.javaFieldType  == 'LocalTime')
+                @DateTimeFormat(pattern = DatePattern.NORM_TIME_PATTERN)
+                #end
+            private $column.javaFieldType end$FieldName;
+            #end
+        #end
+    #end
+}

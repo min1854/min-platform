@@ -1,0 +1,252 @@
+# html type
+#（input 文本框、textarea 文本域、select 下拉框、checkbox 复选框、radio 单选框、datetime 日期控件、imageUpload 图片上传控件、
+#   fileUpload 文件上传控件、editor 富文本控件）
+# query type EQ等于、NE不等于、GT大于、LT小于、LIKE 模糊、BETWEEN 范围
+
+# queryType 默认 EQ
+# htmlType 默认 input
+# query 默认 false
+# list 默认 true
+# insert 默认 true
+# update 默认 true
+# required 默认 true
+
+# isEnum 决定是否生成的实体字段是否为枚举
+
+# enumInfos Enums.java 和 Enums.api 都根据这个来生成
+
+tables:
+  - table: old_file_rel
+    ymlFields:
+      - rel_type:
+          isEnum: true
+          enumInfos:
+            - desc: "工人动态表"
+              name: "OLD_WORKER_ACTIVITIES"
+  - table: test_tree_gen
+    parentMenuId: 1
+    treeCode: id
+    treeName: treeName
+    treeParentCode: parentId
+    ymlFields:
+      - input:
+          query: true
+          queryType: EQ
+      - textarea:
+          query: true
+          queryType: like
+          htmlType: textarea
+      - pull_down:
+          query: true
+          htmlType: select
+          isEnum: true
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - checkbox:
+          query: true
+          htmlType: checkbox
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - radio:
+          query: true
+          htmlType: radio
+          isEnum: true
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - time_range:
+          query: true
+          htmlType: datetime
+          queryType: BETWEEN
+      - image:
+          htmlType: imageUpload
+          required: false
+      - upload_file:
+          list: false
+          htmlType: fileUpload
+          required: false
+      - rich_text:
+          list: false
+          htmlType: editor
+      - not_equal_to:
+          query: true
+          queryType: NE
+      - greater_than:
+          query: true
+          queryType: GT
+      - less_than:
+          query: true
+          queryType: LT
+      - str_like:
+          query: true
+          queryType: LIKE
+  - table: test_gen
+    parentMenuId: 1
+    ymlFields:
+      - input:
+          query: true
+          queryType: EQ
+      - textarea:
+          query: true
+          queryType: like
+          htmlType: textarea
+      - pull_down:
+          query: true
+          htmlType: select
+          isEnum: true
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - checkbox:
+          query: true
+          htmlType: checkbox
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - radio:
+          query: true
+          htmlType: radio
+          isEnum: true
+          enumInfos:
+            - desc: "一"
+              name: "ONE"
+            - desc: "二"
+              name: "TWO"
+      - time_range:
+          query: true
+          htmlType: datetime
+          queryType: BETWEEN
+      - image:
+          htmlType: imageUpload
+          required: false
+      - upload_file:
+          list: false
+          htmlType: fileUpload
+          required: false
+      - rich_text:
+          list: false
+          htmlType: editor
+      - not_equal_to:
+          query: true
+          queryType: NE
+      - greater_than:
+          query: true
+          queryType: GT
+      - less_than:
+          query: true
+          queryType: LT
+      - str_like:
+          query: true
+          queryType: LIKE
+  - table: old_file_rel
+    ymlFields:
+      - rel_type:
+          queryType: EQ
+          #          是否必填，
+          required: false
+          htmlType: select
+          enumInfos:
+            - desc: "工人动态表"
+              name: "OLD_WORKER_ACTIVITIES"
+  - table: old_notice
+    ymlFields:
+      - notice_type:
+          enumInfos:
+            - desc: "通知"
+              name: "NOTICE"
+            - desc: "公告"
+              name: "ANNOUNCEMENT"
+      - notice_status:
+          enumInfos:
+            - desc: "正常"
+              name: "NORMAL"
+            - desc: "关闭"
+              name: "CLOSE"
+  - table: old_post
+    ymlFields:
+      - post_status:
+          inputType: select
+          isEnum: false
+          enumInfos:
+            - desc: "启用"
+              name: "ENABLE"
+            - desc: "禁用"
+              name: "DISABLE"
+  - table: old_role
+    ymlFields:
+      - role_status:
+          inputType: select
+      - data_scope:
+          #          1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5 个人数据
+          enumInfos:
+            - desc: "全部数据权限"
+              name: "ALL"
+            - desc: "自定数据权限"
+              name: "CUSTOMIZE"
+            - desc: "本部门数据权限"
+              name: "CURRENT_DEPT"
+            - desc: "本部门及以下数据权限"
+              name: "CURRENT_DEPT_AND_BELOW"
+            - desc: "个人数据"
+              name: "INDIVIDUAL"
+  - table: old_order
+    ymlFields:
+      - xxx_xxx:
+        #          默认为 false, 没有值或是为 false，但 enumInfo 存在值，就会变为枚举字段
+        isEnum: false
+      - order_status:
+          inputType: select
+  - table: old_menu
+    ymlFields:
+      - menu_type:
+          enumInfos:
+            - desc: "目录"
+              name: "DIR"
+            - desc: "菜单"
+              name: "MENU"
+            - desc: "按钮"
+              name: "BUTTON"
+      - menu_visible:
+          enumInfos:
+            - desc: "显示"
+              name: "SHOW"
+            - desc: "隐藏"
+              name: "HIDDEN"
+      - menu_status:
+          enumInfos:
+            - desc: "正常"
+              name: "NORMAL"
+            - desc: "停用"
+              name: "STOP"
+  - table: old_user
+    ymlFields:
+      - user_status:
+          inputType: select
+          isEnum: true
+          enumInfos:
+            - desc: "启用"
+              name: "ENABLE"
+            - desc: "禁用"
+              name: "DISABLE"
+      - sex:
+          inputType: select
+          isEnum: true
+          enumInfos:
+            - desc: "男"
+              name: "MALE"
+            - desc: "女"
+              name: "FEMALE"
+            - desc: "未知"
+              name: "UNKNOWN"

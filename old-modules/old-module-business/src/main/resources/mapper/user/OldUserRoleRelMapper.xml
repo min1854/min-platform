@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldUserRoleRelMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldUserRoleRel">
+        <id property="userId" column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <id property="roleId" column="role_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="createUserId" column="create_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+
+    <sql id="sel">
+        select user_id,
+               role_id,
+               create_time,
+               create_user_id,
+               create_user
+        from old_user_role_rel
+    </sql>
+
+</mapper>

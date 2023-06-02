@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldDeptMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldDept">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="ancestors" column="ancestors" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="deptName" column="dept_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="orderNum" column="order_num" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="leader" column="leader" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="email" column="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="deptStatus" column="dept_status" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="createUserId" column="create_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="updateUserId" column="update_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               parent_id,
+               ancestors,
+               dept_name,
+               order_num,
+               leader,
+               phone,
+               email,
+               dept_status,
+               create_time,
+               create_user_id,
+               create_user,
+               update_time,
+               update_user_id,
+               update_user,
+               delete_flag
+        from old_dept
+    </sql>
+
+</mapper>

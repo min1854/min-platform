@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.old</groupId>
+    <artifactId>old-spring-boot</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <old.version>${project.version}</old.version>
+        <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+        <codecentric-spring-boot-admin-version>3.0.0-M4</codecentric-spring-boot-admin-version>
+    </properties>
+
+
+    <modules>
+        <module>old-domain</module>
+        <module>old-commons</module>
+        <module>old-modules</module>
+    </modules>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.min1854</groupId>
+            <artifactId>apiAssert</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.11</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.github.min1854</groupId>
+                <artifactId>apiAssert</artifactId>
+                <version>2.0.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-dependencies</artifactId>
+                <version>${codecentric-spring-boot-admin-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>4.0.2</version>
+            </dependency>
+            <!--当前模块的依赖 start-->
+
+
+            <!--
+            因为父工程有配置，导致我重写了，传递过去的依赖，也是父工程配置的依赖。。。maven 是神经病吗？
+            所以我在自己的 pom 文件中重新定义，这样让他传入的依赖，是原本依赖的版本
+
+            现在 spring boot 3 okhttp 版本比原来的更高
+                        <dependency>
+                            <groupId>com.squareup.okhttp3</groupId>
+                            <artifactId>okhttp</artifactId>
+                            <version>4.8.1</version>
+                        </dependency>
+            -->
+
+            <!--domain start-->
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-domain-common</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-domain-generator</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <!--domain end-->
+
+
+            <!--common start -->
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-job</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-minio</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-redis</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-web</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-redisSession</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-mybatis</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-mq</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.old</groupId>
+                <artifactId>old-common-upload</artifactId>
+                <version>${old.version}</version>
+            </dependency>
+
+            <!--common end -->
+
+
+            <!--当前模块的依赖 end-->
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <!--这个版本才支持 spring boot 2.7 以上-->
+                <version>3.5.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>8.4.3</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>3.5.2</version>
+                <scope>compile</scope>
+                <optional>true</optional>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>2.3</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>2.2.0</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.github.wechatpay-apiv3</groupId>
+                <artifactId>wechatpay-apache-httpclient</artifactId>
+                <version>0.4.7</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>0.10.4</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

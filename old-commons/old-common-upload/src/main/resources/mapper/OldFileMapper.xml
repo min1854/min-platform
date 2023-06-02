@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.common.file.mapper.OldFileMapper">
+
+    <resultMap id="baseResultMap" type="com.old.common.file.domain.OldFile">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="originalFileName" column="original_file_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="fileType" column="file_type" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="fileServer" column="file_server" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="filePath" column="file_path" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="x80" column="x80" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="x50" column="x50" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="x20" column="x20" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="createUserId" column="create_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+        <result property="updateUserId" column="update_user_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="BIT" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               original_file_name,
+               file_type,
+               file_name,
+               file_server,
+               file_path,
+               x80,
+               x50,
+               x20,
+               create_time,
+               create_user_id,
+               create_user,
+               update_time,
+               update_user_id,
+               update_user,
+               delete_flag
+        from old_file
+    </sql>
+
+</mapper>

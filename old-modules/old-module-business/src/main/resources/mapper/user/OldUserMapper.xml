@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.old.business.user.mapper.OldUserMapper">
+
+    <resultMap id="baseResultMap" type="com.old.business.user.domain.OldUser">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="deptId" column="dept_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="user_status" jdbcType="SMALLINT"/>
+        <result property="nickName" column="nick_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userType" column="user_type" jdbcType="VARCHAR"/>
+        <result property="email" column="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="SMALLINT"/>
+        <result property="password" column="password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="profile" column="profile" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginIp" column="login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginDate" column="login_date" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="createUserId" column="create_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+        <result property="updateUserId" column="update_user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="updateUser" column="update_user" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" javaType="java.lang.Boolean" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="sel">
+        select id,
+               dept_id,
+               user_name,
+               user_status,
+               nick_name,
+               user_type,
+               email,
+               phone,
+               sex,
+               password,
+               profile,
+               login_ip,
+               login_date,
+               create_time,
+               create_user_id,
+               create_user,
+               update_time,
+               update_user_id,
+               update_user,
+               delete_flag
+        from old_user
+    </sql>
+
+
+    <select id="selectUnallocatedList" resultMap="baseResultMap">
+        select distinct u.id, u.dept_id, u.user_name, u.nick_name, u.email, u.phone, u.user_status, u.create_time
+        from old_user u
+        left join old_dept d on u.dept_id = d.id
+        left join old_user_role_rel ur on u.id = ur.user_id
+        left join old_role r on r.id = ur.role_id
+        where u.delete_flag = false and (r.id != #{roleId} or r.id IS NULL)
+        and u.id not in
+        (select u.id from old_user u inner join old_user_role_rel ur on u.id = ur.user_id and ur.role_id = #{roleId})
+        <if test="userName != null and userName != ''">
+            <bind name="userNameLike" value="'%' + userName + '%'"/>
+            AND u.user_name like #{userNameLike}
+        </if>
+        <if test="phone != null and phone != ''">
+            <bind name="phoneLike" value="'%' + phone + '%'"/>
+            AND u.phone like #{phoneLike}
+        </if>
+        <!-- 数据范围过滤
+        ${params.dataScope}
+        -->
+    </select>
+
+
+    <select id="searchPage" resultType="com.old.business.user.domain.resp.SearchUserResp">
+        select u.id,
+        u.user_name,
+        u.nick_name ,
+        u.phone,
+        u.user_status,
+        u.create_time,
+        u.dept_id,
+        u.create_user,
+        d.dept_name
+        from old_user u
+        left join old_dept d on u.dept_id = d.id
+        <where>
+            <if test="req.userName != null and req.userName != ''">
+                and u.user_name like concat('%', #{req.userName}, '%')
+            </if>
+            <if test="req.phone != null and req.phone != ''">
+                and u.phone like concat('%', #{req.phone}, '%')
+            </if>
+            <if test="req.userStatus != null">
+                and u.user_status = #{req.userStatus}
+            </if>
+            and user_type = #{userType}
+            <if test="req.startTime != null and req.endTime != null">
+                and u.create_time between #{req.startTime} and #{req.endTime}
+            </if>
+            <if test="req.deptId != null">
+                and u.dept_id in (SELECT id FROM old_dept WHERE (id = #{req.deptId} or (find_in_set(#{req.deptId},
+                ancestors) <![CDATA[ <> ]]> 0)) AND delete_flag = 0 )
+            </if>
+            and u.delete_flag = 0
+        </where>
+    </select>
+
+</mapper>

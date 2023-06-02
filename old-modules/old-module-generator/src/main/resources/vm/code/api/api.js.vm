@@ -1,0 +1,66 @@
+import request from '@/utils/request'
+
+
+// 查询 ${tablesBo.tableComment} 列表
+export function ${tablesBo.objectName}Select(query) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/select',
+        method: 'get',
+        params: query
+    })
+}
+
+// 查询 ${tablesBo.tableComment} 条件分页
+export function list${tablesBo.className}(query) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/viewPage',
+        method: 'get',
+        params: query
+    })
+}
+
+// 查询 ${tablesBo.tableComment} 详细
+export function get${tablesBo.className}(${tablesBo.primaryKeyJavaFiledName}) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/getById?${tablesBo.primaryKeyJavaFiledName}=' + ${tablesBo.primaryKeyJavaFiledName},
+        method: 'get'
+    })
+}
+
+// 新增 ${tablesBo.tableComment} 
+export function add${tablesBo.className}(data) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/save',
+        method: 'post',
+        data: data
+    })
+}
+
+// 修改 ${tablesBo.tableComment} 
+export function update${tablesBo.className}(data) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/updateBy${tablesBo.primaryKeyEnumName}',
+        method: 'post',
+        data: data
+    })
+}
+
+
+
+// 删除 ${tablesBo.tableComment}
+export function remove${tablesBo.className}By${tablesBo.primaryKeyEnumName}(${tablesBo.primaryKeyJavaFiledName}) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/removeBy${tablesBo.primaryKeyEnumName}/' + ${tablesBo.primaryKeyJavaFiledName},
+        method: 'post',
+    })
+}
+
+
+// 删除多个 ${tablesBo.tableComment}
+export function del${tablesBo.className}(${tablesBo.primaryKeyJavaFiledName}s) {
+    return request({
+        url: '${generatorBo.requestPathPrefix}${tablesBo.requestPath}/removeBy${tablesBo.primaryKeyEnumName}s',
+        method: 'post',
+        data: ${tablesBo.primaryKeyJavaFiledName}s
+    })
+}

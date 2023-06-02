@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>old-spring-boot</artifactId>
+        <groupId>com.old</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>old-domain</artifactId>
+    <packaging>pom</packaging>
+
+
+    <modules>
+        <module>old-domain-common</module>
+        <module>old-domain-generator</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.old</groupId>
+            <artifactId>old-common</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--这里使用了这个依赖，其实也相当于与 mybatis-plus 绑定了-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

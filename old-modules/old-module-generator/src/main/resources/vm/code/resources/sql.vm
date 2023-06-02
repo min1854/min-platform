@@ -1,0 +1,39 @@
+-- 菜单 SQL
+INSERT INTO old_menu (menu_name, parent_id, order_num, menu_path, component, menu_query, is_frame, is_cache,
+menu_type, menu_visible, menu_status, perms, icon, create_user, create_time, create_user_id,
+update_user, update_time, update_user_id, delete_flag)
+VALUES ('${tablesBo.tableComment}管理', ${tablesBo.parentMenuId}, 1, '${tablesBo.objectName}', '${generatorBo.moduleName}/${tablesBo.objectName}/index', '', 0, 1, 'C', 0, 0,
+'${generatorBo.moduleName}:${tablesBo.objectName}:list', '#', 'old', now(), 1, null, null, null, 0);
+
+-- 按钮父菜单ID
+SELECT @parentId := LAST_INSERT_ID();
+
+
+-- 按钮 SQL
+INSERT INTO old_menu (menu_name, parent_id, order_num, menu_path, component, menu_query, is_frame, is_cache,
+menu_type, menu_visible, menu_status, perms, icon, create_user, create_time, create_user_id,
+update_user, update_time, update_user_id, delete_flag)
+VALUES ('${tablesBo.tableComment}查询', @parentId, 1, '${tablesBo.objectName}', '', '', 0, 1, 'F', 0, 0,
+'${generatorBo.moduleName}:${tablesBo.objectName}:query', '#', 'old', now(), 1, null, null, null, 0);
+
+
+INSERT INTO old_menu (menu_name, parent_id, order_num, menu_path, component, menu_query, is_frame, is_cache,
+menu_type, menu_visible, menu_status, perms, icon, create_user, create_time, create_user_id,
+update_user, update_time, update_user_id, delete_flag)
+VALUES ('${tablesBo.tableComment}新增', @parentId, 2, '${tablesBo.objectName}', '', '', 0, 1, 'F', 0, 0,
+'${generatorBo.moduleName}:${tablesBo.objectName}:add', '#', 'old', now(), 1, null, null, null, 0);
+
+
+INSERT INTO old_menu (menu_name, parent_id, order_num, menu_path, component, menu_query, is_frame, is_cache,
+menu_type, menu_visible, menu_status, perms, icon, create_user, create_time, create_user_id,
+update_user, update_time, update_user_id, delete_flag)
+VALUES ('${tablesBo.tableComment}修改', @parentId, 3, '${tablesBo.objectName}', '', '', 0, 1, 'F', 0, 0,
+'${generatorBo.moduleName}:${tablesBo.objectName}:edit', '#', 'old', now(), 1, null, null, null, 0);
+
+
+INSERT INTO old_menu (menu_name, parent_id, order_num, menu_path, component, menu_query, is_frame, is_cache,
+menu_type, menu_visible, menu_status, perms, icon, create_user, create_time, create_user_id,
+update_user, update_time, update_user_id, delete_flag)
+VALUES ('${tablesBo.tableComment}删除', @parentId, 4, '${tablesBo.objectName}', '', '', 0, 1, 'F', 0, 0,
+'${generatorBo.moduleName}:${tablesBo.objectName}:remove', '#', 'old', now(), 1, null, null, null, 0);
+

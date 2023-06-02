@@ -1,0 +1,15 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.mapper;
+
+import com.old.common.mybatis.base.BaseMapper;
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.${tablesBo.className};
+
+
+/**
+ * ${tablesBo.tableComment}  ${tablesBo.tableName}
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+public interface ${tablesBo.className}Mapper extends BaseMapper<${tablesBo.className}> {
+
+}

@@ -1,0 +1,32 @@
+package ${generatorBo.packageName}.${generatorBo.moduleName}.service;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import ${generatorBo.packageName}.${generatorBo.moduleName}.domain.${tablesBo.className};
+import com.old.common.mybatis.base.BaseService;
+
+import java.util.List;
+
+/**
+ * ${tablesBo.tableComment}  ${tablesBo.tableName}
+ *
+ * @author ${generatorBo.author}
+ * @date ${generatorBo.datetime}
+ */
+public interface ${tablesBo.className}Service extends BaseService<${tablesBo.className}> {
+
+
+    Page<${tablesBo.className}> page(Integer pageNum, Integer pageSize, ${tablesBo.className} ${tablesBo.objectName});
+
+    List<${tablesBo.className}> list(${tablesBo.className} ${tablesBo.objectName});
+
+    ${tablesBo.className} getById(${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName});
+
+    void updateBy${tablesBo.primaryKeyEnumName}(${tablesBo.className} ${tablesBo.objectName}, Integer userId, String userName);
+
+    void save(${tablesBo.className} ${tablesBo.objectName}, Integer userId, String userName);
+
+    void removeBy${tablesBo.primaryKeyEnumName}(${tablesBo.primaryKeyJavaType} ${tablesBo.primaryKeyJavaFiledName}, Integer userId, String userName);
+
+    void removeBy${tablesBo.primaryKeyEnumName}s(List<${tablesBo.primaryKeyJavaType}> ${tablesBo.primaryKeyJavaFiledName}s, Integer userId, String userName);
+}
